@@ -26,8 +26,4 @@ async def read_me(db: Session, token: schemas.TokenGet):
 
 
 async def register(db: Session, user: schemas.UserLogin):
-    user = models.User(login=user.login, password=user.password)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    return user_auth.register(db, user.login, user.password)

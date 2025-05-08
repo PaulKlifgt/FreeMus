@@ -1,4 +1,4 @@
-import jwt
+import jwt, hashlib
 
 import settings
 from . import  models
@@ -20,13 +20,27 @@ class UserAuth():
             headers={"WWW-Authenticate": "Bearer"},
     )
 
+    def hash_password(self, password: str):
+        return hashlib.sha256(password.encode()).hexdigest()
+    
+
+    def check_password(self, stored_password, provided_password):
+        return stored_password == hashlib.sha256(provided_password.encode()).hexdigest()
+
+
+    def register(self, db: Session, login: str, password: str):
+        user = models.User(login=login, password=self.hash_password(password))
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
 
     # проверка валидности юзера
     def validate_user(self, db: Session, login: str, password: str) -> Union[UserDTO, bool]:
         user: UserDTO = db.query(models.User).filter(models.User.login == login).first()
-        if user and user.password.__eq__(password):
+        if user and self.check_password(user.password, password):
             return user
-        return self.credentials_exception
+        return 
 
     # создание токена
     def create_access_token(self, data: dict) -> str:
