@@ -79,6 +79,6 @@ async def create_song(token: auth.schemas.TokenGet, song: songs.schemas.SongCrea
     return await songs.routes.create_song(db=db, token=token, song=song)
 
 
-@app.get('/get_song_info/')
+@app.post('/get_song_info/')
 async def create_song(song: songs.schemas.SongGet, db: Session = Depends(get_db)):
     return await songs.routes.get_song_info(db=db, song=song)
