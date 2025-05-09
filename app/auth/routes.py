@@ -20,7 +20,7 @@ async def login(db: Session, user: schemas.UserLogin):
     return token
 
 
-async def read_me(db: Session, token: schemas.TokenGet):
+async def get_user_by_token(db: Session, token: schemas.TokenGet):
     #декодируем токен и получаем обьект пользователя
     return user_auth.get_current_user(token=token.access_token, db=db)
 

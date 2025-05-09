@@ -59,7 +59,7 @@ async def login(user: auth.schemas.UserLogin, db: Session = Depends(get_db)):
 #пример ручки для получения данных по токену
 @app.post('/users/me/')
 async def read_me(token: auth.schemas.TokenGet, db: Session = Depends(get_db)):
-    return await auth.routes.read_me(token=token, db=db)
+    return await auth.routes.get_user_by_token(token=token, db=db)
 
 
 @app.get('/')
@@ -69,6 +69,16 @@ async def main(db: Session = Depends(get_db)):
     return HTMLResponse(data)
 
 
-@app.get('/get_song/')
-async def get_song(db: Session = Depends(get_db), range: Optional[str] = Header(None)):
-    return await songs.routes.get_song(db=db, range=range)
+@app.get('/get_song_streaming/')
+async def get_song_streaming(range: Optional[str] = Header(None), db: Session = Depends(get_db)):
+    return await songs.routes.get_song_streaming(range=range, db=db)
+
+
+@app.post('/create_song/')
+async def create_song(token: auth.schemas.TokenGet, song: songs.schemas.SongCreate, db: Session = Depends(get_db)):
+    return await songs.routes.create_song(db=db, token=token, song=song)
+
+
+@app.post('/get_song_info/')
+async def create_song(song: songs.schemas.SongGet, db: Session = Depends(get_db)):
+    return await songs.routes.get_song_info(db=db, song=song)
