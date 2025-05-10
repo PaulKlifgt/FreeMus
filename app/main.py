@@ -64,7 +64,7 @@ async def read_me(token: auth.schemas.TokenGet, db: Session = Depends(get_db)):
 
 @app.get('/')
 async def main(db: Session = Depends(get_db)):
-    data = '<!DOCTYPE html><html><head><title>FastAPI video streaming</title></head><body><audio width="1200" controls><source src="http://127.0.0.1:8000/get_song/" type="audio/mp3" /></audio></body></html>'
+    data = '<!DOCTYPE html><html><head><title>FastAPI video streaming</title></head><body><audio width="1200" controls><source src="http://127.0.0.1:8000/get_song_streaming/" type="audio/mp3" /></audio></body></html>'
 
     return HTMLResponse(data)
 
