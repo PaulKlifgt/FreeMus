@@ -8,7 +8,7 @@ class Token(BaseModel):
 
 class UserDTO(BaseModel):
     id: int
-    login: str
+    username: str
     password: str
 
 
@@ -16,5 +16,5 @@ class TokenGet(Token):
     pass
 
 class UserLogin(BaseModel):
-    login: str
+    username: str
     password: str

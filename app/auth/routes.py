@@ -26,4 +26,4 @@ async def get_user_by_token(db: Session, token: schemas.TokenGet):
 
 
 async def register(db: Session, user: schemas.UserLogin):
-    return user_auth.register(db, user.login, user.password)
+    return user_auth.register(db, user.username, user.password)

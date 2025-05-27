@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 id="text">Здесь будет информация о пользователе</h3>
+    <button onclick="GetInfo()" id="button">Получить информацию</button>
+    <script>
+        const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0cmluZyIsInBhc3N3b3JkIjoic3RyaW5nIn0.0TN_8cvxr2mjVCixhNqYI9kt8x39BTJfc5C81KRFlYU';
+        function GetInfo(){
+            fetch('http://127.0.0.1:8000/users/me/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+            })
+            .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text').innerHTML = "id: "+data.id+', username: '+data.username+', password: '+data.password;
+
+                })
+            .catch(error => {
+                document.getElementById('text').innerHTML = 'Ошибка:' + error;
+            });
+        }
+        
+    </script>
+</body>
+</html>

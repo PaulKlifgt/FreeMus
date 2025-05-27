@@ -7,7 +7,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    login = Column(String, index=True)
+    username = Column(String, index=True)
     password = Column(String, index=True)
     songs = relationship("Song", back_populates="author")
     albums = relationship("Album", back_populates="author")
