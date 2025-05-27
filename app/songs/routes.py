@@ -60,7 +60,7 @@ async def get_song_streaming(db: Session, range: Optional[str] = Header(None)):
 
 
 async def create_song(db: Session, token: auth.schemas.TokenGet, song: schemas.SongCreate):
-    user_author = auth.routes.user_auth.get_current_user(db=db, token=token.access_token)
+    user_author = auth.routes.user_auth.get_current_user(db=db, token=token)
     file_name = user_author.login+'@'+song.name
     new_song = models.Song(
         name=song.name,
@@ -74,11 +74,9 @@ async def create_song(db: Session, token: auth.schemas.TokenGet, song: schemas.S
     return new_song
     
 
-async def get_song_info(db: Session, song: schemas.SongGet):
-    author = db.query(auth.models.User).filter(auth.models.User.login == song.author_name).first()
-    if author:
-        song = db.query(models.Song).filter(models.Song.name == song.name, models.Song.author == author).first()
-        if song:
-            return song
-        raise HTTPException(status_code=404, detail="Song not found")
-    raise HTTPException(status_code=404, detail="User not found")
+async def get_song_info(db: Session, song_id: int):
+    
+    song = db.query(models.Song).filter(models.Song.id == song_id).first()
+    if song:
+        return song
+    raise HTTPException(status_code=404, detail="Song not found")

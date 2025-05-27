@@ -16,13 +16,13 @@ user_auth = UserAuth()
 
 async def login(db: Session, user: schemas.UserLogin):
     #получаем токен и возращаем клиент
-    token = user_auth.login_for_access_token(db, user.login, user.password)
+    token = user_auth.login_for_access_token(db, user.username, user.password)
     return token
 
 
 async def get_user_by_token(db: Session, token: schemas.TokenGet):
     #декодируем токен и получаем обьект пользователя
-    return user_auth.get_current_user(token=token.access_token, db=db)
+    return user_auth.get_current_user(token=token, db=db)
 
 
 async def register(db: Session, user: schemas.UserLogin):

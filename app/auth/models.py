@@ -10,3 +10,4 @@ class User(Base):
     login = Column(String, index=True)
     password = Column(String, index=True)
     songs = relationship("Song", back_populates="author")
+    albums = relationship("Album", back_populates="author")
