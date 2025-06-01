@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import Annotated
+from fastapi import Form
 
 
 class Token(BaseModel):
@@ -15,6 +17,12 @@ class UserDTO(BaseModel):
 class TokenGet(Token):
     pass
 
-class UserLogin(BaseModel):
-    username: str
-    password: str
+
+class UserLogin:
+    def __init__(self, 
+            username: Annotated[str, Form()],
+            password: Annotated[str, Form()]
+            ):
+        self.username = username
+        self.password = password
+

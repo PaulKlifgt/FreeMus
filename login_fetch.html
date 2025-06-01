@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 id="text">Здесь будет информация о пользователе</h3>
+    <button onclick="Login()" id="button">Login</button>
+    <script>
+        function Login(){
+            fetch('http://127.0.0.1:8000/users/login/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({ 'username': 'string', 'password': 'string' }).toString()
+            })
+            .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text').innerHTML = "token: "+data.access_token;
+
+                })
+            .catch(error => {
+                document.getElementById('text').innerHTML = 'Ошибка:' + error;
+            });
+        }
+    </script>
+</body>
+</html>

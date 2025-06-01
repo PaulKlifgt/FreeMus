@@ -9,7 +9,6 @@ from . import models
 from .utils import UserAuth
 
 
-
 #экземпляр класса
 user_auth = UserAuth()
 

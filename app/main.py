@@ -1,5 +1,5 @@
 from typing import Annotated, Optional
-from fastapi import FastAPI, Depends, Header
+from fastapi import FastAPI, Depends, Header, Form
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -51,7 +51,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login/")
 
 # регистрация
 @app.post('/users/register/', tags=["Users"])
-async def register(user: auth.schemas.UserLogin, db: Session = Depends(get_db)):
+async def register(user: Annotated[auth.schemas.UserLogin, Depends()], db: Session = Depends(get_db)):
     return await auth.routes.register(user=user, db=db)
 
 
@@ -74,16 +74,16 @@ async def main(db: Session = Depends(get_db)):
     return HTMLResponse(data)
 
 
-@app.get('/get_song_streaming/', tags=["Songs"])
+@app.get('/songs/get_song_streaming/', tags=["Songs"])
 async def get_song_streaming(range: Optional[str] = Header(None), db: Session = Depends(get_db)):
     return await songs.routes.get_song_streaming(range=range, db=db)
 
 
-@app.post('/create_song/', tags=["Songs"])
+@app.post('/songs/create_song/', tags=["Songs"])
 async def create_song(song: songs.schemas.SongCreate, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     return await songs.routes.create_song(db=db, token=token, song=song)
 
 
-@app.get('/get_song_info/', tags=["Songs"])
+@app.get('/songs/get_song_info/', tags=["Songs"])
 async def create_song(song_id: int, db: Session = Depends(get_db)):
     return await songs.routes.get_song_info(db=db, song_id=song_id)

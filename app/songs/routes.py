@@ -59,9 +59,9 @@ async def get_song_streaming(db: Session, range: Optional[str] = Header(None)):
     return StreamingResponse(iterfile(), status_code=206 if range else 200, headers=headers, media_type="audio/mp3")
 
 
-async def create_song(db: Session, token: auth.schemas.TokenGet, song: schemas.SongCreate):
+async def create_song(db: Session, token: str, song: schemas.SongCreate):
     user_author = auth.routes.user_auth.get_current_user(db=db, token=token)
-    file_name = user_author.login+'@'+song.name
+    file_name = user_author.username+'@'+song.name
     new_song = models.Song(
         name=song.name,
         file_path='/'+file_name,
